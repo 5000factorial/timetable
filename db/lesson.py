@@ -16,5 +16,6 @@ class Lesson(BaseClass):
     name = CharField()
     start = TimeField()
     end = TimeField()
+    date = DateField()
 
 Lesson.create_table()

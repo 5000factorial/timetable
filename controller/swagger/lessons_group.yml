@@ -1,7 +1,7 @@
-Returns a list of lessons for a specific student
+Returns a list of lessons for a specific group
 ---
 parameters:
-  - name: student_id
+  - name: group_id
     in: path
     type: int
     required: true

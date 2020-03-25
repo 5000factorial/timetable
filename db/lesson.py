@@ -14,7 +14,7 @@ class Lesson(BaseClass):
     room = ForeignKeyField(Room)
     lecturer = ForeignKeyField(Lecturer)
     name = CharField()
-    start = DateTimeField()
-    end = DateTimeField()
+    start = TimeField()
+    end = TimeField()
 
 Lesson.create_table()

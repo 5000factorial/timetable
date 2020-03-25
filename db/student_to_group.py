@@ -5,7 +5,7 @@ from db.student import Student
 from db.group import Group
 
 class StudentToGroup(BaseClass):
-    GroupID = ForeignKeyField(Student)
-    LessonID = ForeignKeyField(Group)
+    StudentID = ForeignKeyField(Student)
+    GroupID = ForeignKeyField(Group)
 
 StudentToGroup.create_table()

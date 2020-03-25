@@ -1,0 +1,33 @@
+Returns a list of lessons for a specific student
+---
+parameters:
+  - name: student_id
+    in: path
+    type: int
+    required: true
+  - name: "date-from"
+    in: "query"
+    description: "Start date to filter by"
+    required: false
+    type: string
+    format: date
+  - name: "date-to"
+    in: "query"
+    description: "End date to filter by"
+    required: false
+    type: string
+    format: date
+definitions:
+  Lesson:
+    type: object
+    properties:
+      name: 
+        type: string
+    # TODO
+responses:
+  200:
+    description: A list of lessons
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/Lesson"

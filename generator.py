@@ -67,6 +67,7 @@ for i in range(1):
         title = fake.job()
         time_start = datetime.strptime(fake.time(pattern='%H:%M:%S', end_datetime=None), '%H:%M:%S')
         time_end = time_start + timedelta(minutes=90)
-        Lesson.create(group = gr.id, room = room, lecturer = lecturer, name = title, start = time_start, end = time_end)
+        date = fake.date_between(start_date='-1y', end_date='today')
+        Lesson.create(group = gr.id, room = room, lecturer = lecturer, name = title, start = time_start, end = time_end, date=date)
 
 

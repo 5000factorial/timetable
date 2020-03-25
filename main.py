@@ -2,6 +2,14 @@
 from flask import Flask, jsonify
 from flasgger import Swagger
 
+DEBUG_SQL = False
+
+if DEBUG_SQL:
+    import logging
+    logger = logging.getLogger('peewee')
+    logger.addHandler(logging.StreamHandler())
+    logger.setLevel(logging.DEBUG)
+
 # Can be used for auth. Now it is used only to run all scripts in db directory
 from db import db
 

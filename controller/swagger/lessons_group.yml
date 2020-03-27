@@ -45,3 +45,5 @@ responses:
       type: array
       items:
         $ref: "#/definitions/Lesson"
+  404:
+    description: A Group with the specified ID was not found.

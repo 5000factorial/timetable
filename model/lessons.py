@@ -36,8 +36,8 @@ def for_group(group_id, date_frame=(None, None)):
     query = (Lesson
         .select(Lesson.name, Lesson.start, Lesson.end, Lesson.date, Room.name, Room.address, Group.name)
         .join(Group).switch(Lesson)
-        .join(Lecturer, JOIN.LEFT_OUTER).switch(Lesson).
-        join(Room, JOIN.LEFT_OUTER).switch(Lesson).
-        where(Lesson.group == group_id)
+        .join(Lecturer).switch(Lesson)
+        .join(Room).switch(Lesson)
+        .where(Lesson.group == group_id)
     )
     return query_to_json_mapper(query)

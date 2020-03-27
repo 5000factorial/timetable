@@ -24,7 +24,7 @@ def for_student(student_id):
     # Check if student exists
     try:
         Student.get_by_id(student_id)
-    except Group.DoesNotExist:
+    except Student.DoesNotExist:
         raise NoSuchDBRecordException("Student with id {} does not exist in database".format(student_id))
 
     query = (Lesson

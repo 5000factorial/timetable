@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from flasgger import Swagger
 
 DEBUG_SQL = False
+USE_FLASK_FOR_STATIC = True
 
 if DEBUG_SQL:
     import logging
@@ -21,6 +22,12 @@ swagger = Swagger(app)
 # Flask Blueprints section. Register blueprints here!
 from controller.lessons import lessons
 app.register_blueprint(lessons)
+
+# For development purposes, we can use flask to serve static files
+# But you can turn this off and serve static with nginx for example
+if USE_FLASK_FOR_STATIC:
+    from controller.static import static
+    app.register_blueprint(static)
 
 # To run on uwsgi: uwsgi --http 0.0.0.0:8000 --wsgi-file main.py --callable app --master
 

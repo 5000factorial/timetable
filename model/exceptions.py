@@ -1,0 +1,2 @@
+class NoSuchDBRecordException(ValueError):
+    pass

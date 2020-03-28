@@ -3,7 +3,7 @@ from flasgger import swag_from
 import model.lessons
 from model.exceptions import NoSuchDBRecordException
 
-lessons = Blueprint('lessons',  __name__, url_prefix='/lessons')
+lessons = Blueprint('lessons',  __name__, url_prefix='/api/lessons')
 
 @lessons.route('/student/<int:student_id>')
 @swag_from('swagger/lessons_student.yml')

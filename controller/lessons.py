@@ -8,9 +8,10 @@ lessons = Blueprint('lessons',  __name__, url_prefix='/api/lessons')
 @lessons.route('/student/<int:student_id>')
 @swag_from('swagger/lessons_student.yml')
 def get_lessons_for_student(student_id):
-    # TODO: request.args.get('date-from'), request.args.get('date-to')
+    date_from = request.args.get('date-from')
+    date_to = request.args.get('date-to')
     try:
-        return model.lessons.for_student(student_id)
+        return model.lessons.for_student(student_id, date_from, date_to)
     except NoSuchDBRecordException:
         return 'Not Found', 404
 

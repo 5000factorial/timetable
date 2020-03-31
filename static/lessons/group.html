@@ -7,9 +7,13 @@
         <script type="text/javascript" src="/scripts.js"></script>
     </head>
     <body>
+        <div id="header"></div>
         <ul id='lessons-list' class='lessons-list'></ul>
     </body>
     <script>
-        document.onload = list_injector('/api/lessons/group/')
+        document.onload = list_injector('/api/lessons/group/');
+        h = document.createElement('h1');
+        h.innerText = 'Группа ' + get_last_part_of_path().split('?')[0];
+        document.getElementById('header').appendChild(h);
     </script>
 </html>

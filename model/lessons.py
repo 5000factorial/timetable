@@ -52,7 +52,15 @@ def for_student(student_id, date_from=None, date_to=None):
         query = query.where(Lesson.date < date.fromisoformat(date_to))
     return query_to_json_mapper(query)
 
-def for_group(group_id, date_frame=(None, None)):
+def for_group(group_id, date_from=None, date_to=None):
+    """
+        Retrives lessons for group filtered by date
+
+        Keyword arguments:
+        group_id - int ID of a group
+        date_from - date in iso format string (!) or None (default: None)
+        date_to - date in iso format string (!) or None (default: None)
+        """
     # Check if group exists
     try:
         Group.get_by_id(group_id)
@@ -66,4 +74,8 @@ def for_group(group_id, date_frame=(None, None)):
         .join(Room).switch(Lesson)
         .where(Lesson.group == group_id)
     )
+    if date_from != None:
+        query = query.where(Lesson.date > date.fromisoformat(date_from))
+    if date_to != None:
+        query = query.where(Lesson.date < date.fromisoformat(date_to))
     return query_to_json_mapper(query)

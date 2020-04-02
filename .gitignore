@@ -168,3 +168,9 @@ Temporary Items
 # Ignore all local history of files
 .history
 .vscode
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/timetable.iml
+.idea/vcs.xml
+.idea/workspace.xml

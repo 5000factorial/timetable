@@ -5,6 +5,7 @@ from model.exceptions import NoSuchDBRecordException
 
 lessons = Blueprint('lessons',  __name__, url_prefix='/api/lessons')
 
+
 @lessons.route('/student/<int:student_id>')
 @swag_from('swagger/lessons_student.yml')
 def get_lessons_for_student(student_id):
@@ -15,10 +16,24 @@ def get_lessons_for_student(student_id):
     except NoSuchDBRecordException:
         return 'Not Found', 404
 
+
 @lessons.route('/group/<int:group_id>')
 @swag_from('swagger/lessons_group.yml')
 def get_lessons_for_group(group_id):
+    date_from = request.args.get('date-from')
+    date_to = request.args.get('date-to')
     try:
-        return model.lessons.for_group(group_id)
+        return model.lessons.for_group(group_id, date_from, date_to)
+    except NoSuchDBRecordException:
+        return 'Not Found', 404
+
+
+@lessons.route('/lecturer/<int:lecturer_id>')
+@swag_from('swagger/lessons_lecturer.yml')
+def get_lessons_for_lecturer(lecturer_id):
+    date_from = request.args.get('date-from')
+    date_to = request.args.get('date-to')
+    try:
+        return model.lessons.for_lecturer(lecturer_id, date_from, date_to)
     except NoSuchDBRecordException:
         return 'Not Found', 404

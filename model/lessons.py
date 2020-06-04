@@ -7,6 +7,7 @@ from datetime import date
 
 # TODO: maybe run some perfomance tests
 
+
 def query_to_json_mapper(query):
     return jsonify([
         {
@@ -21,7 +22,8 @@ def query_to_json_mapper(query):
         for i in query
     ])
 
-def for_student(student_id, date_from=None, date_to=None):
+
+def for_student(student_id, date_from = None, date_to = None):
     """
     Retrives lessons for student filtered by date
 
@@ -45,6 +47,7 @@ def for_student(student_id, date_from=None, date_to=None):
         .join(Room)
         .switch(Lesson)
         .where(Student.id == student_id)
+        .order_by(Lesson.date, Lesson.start)
     )
     if date_from != None:
         query = query.where(Lesson.date > date.fromisoformat(date_from))
@@ -52,18 +55,62 @@ def for_student(student_id, date_from=None, date_to=None):
         query = query.where(Lesson.date < date.fromisoformat(date_to))
     return query_to_json_mapper(query)
 
-def for_group(group_id, date_frame=(None, None)):
+
+def for_group(group_id, date_from = None, date_to = None):
+    """
+        Retrives lessons for group filtered by date
+
+        Keyword arguments:
+        group_id - int ID of a group
+        date_from - date in iso format string (!) or None (default: None)
+        date_to - date in iso format string (!) or None (default: None)
+        """
     # Check if group exists
     try:
         Group.get_by_id(group_id)
     except Group.DoesNotExist:
         raise NoSuchDBRecordException("Group with id {} does not exist in database".format(group_id))
-    
+
     query = (Lesson
-        .select(Lesson.name, Lesson.start, Lesson.end, Lesson.date, Room.name, Room.address, Group.name)
-        .join(Group).switch(Lesson)
-        .join(Lecturer).switch(Lesson)
-        .join(Room).switch(Lesson)
-        .where(Lesson.group == group_id)
-    )
+             .select(Lesson.name, Lesson.start, Lesson.end, Lesson.date, Room.name, Room.address, Group.name)
+             .join(Group).switch(Lesson)
+             .join(Lecturer).switch(Lesson)
+             .join(Room).switch(Lesson)
+             .where(Lesson.group == group_id)
+             .order_by(Lesson.date, Lesson.start)
+             )
+    if date_from != None:
+        query = query.where(Lesson.date > date.fromisoformat(date_from))
+    if date_to != None:
+        query = query.where(Lesson.date < date.fromisoformat(date_to))
+    return query_to_json_mapper(query)
+
+
+def for_lecturer(lecturer_id, date_from = None, date_to = None):
+    """
+        Retrives lessons for lecturer filtered by date
+
+        Keyword arguments:
+        lecturer_id - int ID of a lecturer
+        date_from - date in iso format string (!) or None (default: None)
+        date_to - date in iso format string (!) or None (default: None)
+        """
+    # Check if group exists
+    try:
+        Lecturer.get_by_id(lecturer_id)
+    except Lecturer.DoesNotExist:
+        raise NoSuchDBRecordException("Lecturer with id {} does not exist in database".format(lecturer_id))
+
+    query = (Lesson
+             .select(Lesson.name, Lesson.start, Lesson.end, Lesson.date, Room.name, Room.address, Group.name)
+             .join(Group).switch(Lesson)
+             .join(Lecturer).switch(Lesson)
+             .join(Room).switch(Lesson)
+             .where(Lesson.lecturer == lecturer_id)
+             .order_by(Lesson.date, Lesson.start)
+             )
+    if date_from != None:
+        query = query.where(Lesson.date > date.fromisoformat(date_from))
+    if date_to != None:
+        query = query.where(Lesson.date < date.fromisoformat(date_to))
     return query_to_json_mapper(query)

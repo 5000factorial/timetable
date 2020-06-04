@@ -25,7 +25,7 @@ def lessons_groups(group_id):
 
 @static.route('/lessons/lecturer/<int:lecturer_id>')
 def lessons_lecturers(lecturer_id):
-    return static.send_static_file('lessons/lecturer.html')
+    return render_template('lessons/lecturer.html')
 
 
 @static.route('/<path:path>')

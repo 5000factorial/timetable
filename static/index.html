@@ -7,16 +7,39 @@
         <script type="text/javascript" src="/scripts.js"></script>
     </head>
     <body>
-        <a href="/lessons/student/1">Студент 1</a>
-        <a href="/lessons/student/30">Студент 30</a>
-        <a href="/lessons/student/60">Студент 60</a>
+<div style="margin-left: auto; margin-right: auto">
+        <form>
+               <legend>Groups</legend>
+               <p>
+                  <select id = "groups" onchange="location = this.value;">
+                    {% for group in groups -%}
+                    <option value='/lessons/group/{{ group.id }}'>{{ group.name }}</option>
+                    {%- endfor %}
+                  </select>
+               </p>
+         </form>
 
-        <a href="/lessons/group/1">Группа 1</a>
-        <a href="/lessons/group/5">Группа 5</a>
-        <a href="/lessons/group/10">Группа 10</a>
+         <form>
+            <legend>Students</legend>
+            <p>
+               <select id = "students" onchange="location = this.value;">
+                 {% for student in students -%}
+                 <option value='/lessons/student/{{ student.id }}'>{{ student.name }}</option>
+                 {%- endfor %}
+               </select>
+            </p>
+      </form>
 
-        <a href="/lessons/lecturer/1">Преподаватель 1</a>
-        <a href="/lessons/lecturer/5">Преподаватель 5</a>
-        <a href="/lessons/lecturer/10">Преподаватель 10</a>
+      <form>
+        <legend>Lecturers</legend>
+        <p>
+           <select id = "lecturer" onchange="location = this.value;">
+             {% for lecturer in lecturers -%}
+             <option value='/lessons/lecturer/{{ lecturer.id }}'>{{ lecturer.name }}</option>
+             {%- endfor %}
+           </select>
+        </p>
+  </form>
+</div>
     </body>
 </html>

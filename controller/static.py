@@ -1,20 +1,23 @@
-from flask import Blueprint, send_from_directory
+from flask import Blueprint, send_from_directory, render_template
 from os import path
+from model.groups import groups, students, lecturers
 
-static = Blueprint('templates',  __name__, static_folder=path.abspath('static'))
+static = Blueprint('templates',  __name__, template_folder=path.abspath('static'))
 print(path.abspath('static'))
 
 @static.route('/')
 def index():
-    return static.send_static_file('index.html')
+    g = list(groups())
+    print(g)
+    return render_template('index.html', groups=groups(), students=students(), lecturers=lecturers())
 
 @static.route('/lessons/student/<int:student_id>')
 def lessons_students(student_id):
-    return static.send_static_file('lessons/student.html')
+    return render_template('lessons/student.html')
 
 @static.route('/lessons/group/<int:group_id>')
 def lessons_groups(group_id):
-    return static.send_static_file('lessons/group.html')
+    return render_template('lessons/group.html')
 
 @static.route('/<path:path>')
 def etc(path):

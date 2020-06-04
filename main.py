@@ -2,8 +2,8 @@
 from flask import Flask, jsonify
 from flasgger import Swagger
 
-DEBUG_SQL = False
-USE_FLASK_FOR_STATIC = True
+DEBUG_SQL = True
+USE_FLASK_TEMPLATES = True
 
 if DEBUG_SQL:
     import logging
@@ -25,7 +25,7 @@ app.register_blueprint(lessons)
 
 # For development purposes, we can use flask to serve static files
 # But you can turn this off and serve static with nginx for example
-if USE_FLASK_FOR_STATIC:
+if USE_FLASK_TEMPLATES:
     from controller.static import static
     app.register_blueprint(static)
 

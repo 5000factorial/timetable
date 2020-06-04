@@ -7,9 +7,10 @@
         <script type="text/javascript" src="/scripts.js"></script>
     </head>
     <body>
-<div style="margin-left: auto; margin-right: auto">
+<div class = 'main'>
+    <h1>Timetable</h1>
         <form>
-               <legend>Groups</legend>
+               <legend>Group</legend>
                <p>
                   <select id = "groups" onchange="location = this.value;">
                     {% for group in groups -%}
@@ -20,7 +21,7 @@
          </form>
 
          <form>
-            <legend>Students</legend>
+            <legend>Student</legend>
             <p>
                <select id = "students" onchange="location = this.value;">
                  {% for student in students -%}
@@ -31,7 +32,7 @@
       </form>
 
       <form>
-        <legend>Lecturers</legend>
+        <legend>Lecturer</legend>
         <p>
            <select id = "lecturer" onchange="location = this.value;">
              {% for lecturer in lecturers -%}

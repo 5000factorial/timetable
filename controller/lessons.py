@@ -11,8 +11,6 @@ lessons = Blueprint('lessons',  __name__, url_prefix='/api/lessons')
 def get_lessons_for_student(student_id):
     date_from = request.args.get('date-from')
     date_to = request.args.get('date-to')
-    print(date_from, date_to)
-    print([i for i in request.args.items()])
     try:
         return model.lessons.for_student(student_id, date_from, date_to)
     except NoSuchDBRecordException:

@@ -47,6 +47,7 @@ def for_student(student_id, date_from = None, date_to = None):
         .join(Room)
         .switch(Lesson)
         .where(Student.id == student_id)
+        .order_by(Lesson.date, Lesson.start)
     )
     if date_from != None:
         query = query.where(Lesson.date > date.fromisoformat(date_from))
@@ -76,6 +77,7 @@ def for_group(group_id, date_from = None, date_to = None):
              .join(Lecturer).switch(Lesson)
              .join(Room).switch(Lesson)
              .where(Lesson.group == group_id)
+             .order_by(Lesson.date, Lesson.start)
              )
     if date_from != None:
         query = query.where(Lesson.date > date.fromisoformat(date_from))
@@ -105,6 +107,7 @@ def for_lecturer(lecturer_id, date_from = None, date_to = None):
              .join(Lecturer).switch(Lesson)
              .join(Room).switch(Lesson)
              .where(Lesson.lecturer == lecturer_id)
+             .order_by(Lesson.date, Lesson.start)
              )
     if date_from != None:
         query = query.where(Lesson.date > date.fromisoformat(date_from))

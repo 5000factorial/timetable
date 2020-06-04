@@ -1,4 +1,4 @@
-from db import Lesson, Group, StudentToGroup, Room, Lecturer, Student
+from db import Group, Lecturer, Student
 
 def groups():
     return Group.select()

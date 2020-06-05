@@ -1,8 +1,11 @@
 from flask import Blueprint, send_from_directory, render_template, request
 from os import path
 from model.groups import groups, students, lecturers
-from db import Group, Lecturer, Student, Room
+from db import Group, Lecturer, Student, Room, Lesson
 from flask import jsonify
+import datetime
+from peewee import *
+
 
 static = Blueprint('templates',  __name__, template_folder=path.abspath('static'))
 print(path.abspath('static'))
@@ -42,7 +45,35 @@ def new_lesson():
 @static.route('/api/rooms/address/', methods=['OPTIONS'])
 def rooms_by_address():
     print(request.form)
-    return jsonify([{'id': i.id, 'name': i.name} for i in Room.select().where(Room.address == request.form['address'])])
+    if not 'start' in request.form.keys():
+        return jsonify(
+            [
+                {'id': i.id, 'name': i.name} 
+                for i in Room.select().where(
+                    Room.address == request.form['address']
+                )
+            ])
+    else:
+        data = dict(request.form)
+        print('awdawdawdaw')
+        start = data['start'].split(':')
+        data['start'] = datetime.datetime.now().replace(hour=int(start[0]), minute=int(start[1]), second=0)
+        data['end'] = data['start'] + datetime.timedelta(hours=1, minutes=30)
+        data['start'] = datetime.time(hour=data['start'].hour, minute=data['start'].minute)
+        data['end'] = datetime.time(hour=data['end'].hour, minute=data['end'].minute)
+        data['date'] = datetime.datetime.fromisoformat(data['date'].replace('Z', '')).date()
+        qq = Room.select().where((Room.address == data['address']) & Room.id.not_in(
+            Room.select(Room.id).join(Lesson).where(
+                (Lesson.date == data['date']) &
+                (
+                    ((data['start'] >= Lesson.start) & (data['start'] <= Lesson.end))
+                    | ((data['end'] >= Lesson.start) & (  data['end'] <= Lesson.end))
+                )
+            )
+        ))
+        print(list(qq))
+        return jsonify([{'id': i.id, 'name': i.name} for i in qq])
+
 
 @static.route('/<path:path>')
 def etc(path):

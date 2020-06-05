@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flasgger import swag_from
 import model.lessons
 from model.exceptions import NoSuchDBRecordException
+import datetime
 
 lessons = Blueprint('lessons',  __name__, url_prefix='/api/lessons')
 
@@ -38,7 +39,7 @@ def get_lessons_for_lecturer(lecturer_id):
     except NoSuchDBRecordException:
         return 'Not Found', 404
 
-import datetime
+
 @lessons.route('/', methods=['POST'])
 def new_lesson():
     data = dict(request.form)

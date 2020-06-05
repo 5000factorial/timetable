@@ -35,6 +35,16 @@
         </p>
 
         <p>
+            Date:
+            <input type="date" id="date" required>
+        </p>
+
+        <p>
+            Start time:
+            <input type="time" id='start' required>
+        </p>
+
+        <p>
             Room:
             <select id="address" onchange="adr(this.value)" required>
                 {% for address in addresses -%}
@@ -43,16 +53,6 @@
             </select>
 
             <select id='target' required></select>
-        </p>
-
-        <p>
-            Date:
-            <input type="date" id="date" required>
-        </p>
-
-        <p>
-            Start time:
-            <input type="time" id='start' required>
         </p>
 
         <input type="submit">
@@ -79,7 +79,11 @@
                     });
                 }
             };
-            xhr.send('address=' + encodeURIComponent(address));
+            xhr.send(
+                'address=' + encodeURIComponent(address) + 
+                '&date=' + encodeURIComponent(new Date($('#date')[0].value).toISOString()) +
+                '&start=' + encodeURIComponent($('#start')[0].value)
+            );
         }
         $('#form').on('submit', function(e) {
             
@@ -99,10 +103,10 @@
                 'name':     $('#name')[0].value,
             },
             success: function() {
-                alert('success');
+                alert('Success');
             },
             error: function(a,b) {
-                alert('Please choose another room');
+                alert('Error!');
             }
             });
         });

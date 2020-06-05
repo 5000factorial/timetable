@@ -37,3 +37,17 @@ def get_lessons_for_lecturer(lecturer_id):
         return model.lessons.for_lecturer(lecturer_id, date_from, date_to)
     except NoSuchDBRecordException:
         return 'Not Found', 404
+
+import datetime
+@lessons.route('/', methods=['POST'])
+def new_lesson():
+    data = dict(request.form)
+    start = data['start'].split(':')
+    data['start'] = datetime.datetime.now().replace(hour=int(start[0]), minute=int(start[1]), second=0)
+    data['end'] = data['start'] + datetime.timedelta(hours=1, minutes=30)
+    data['start'] = datetime.time(hour=data['start'].hour, minute=data['start'].minute)
+    data['end'] = datetime.time(hour=data['end'].hour, minute=data['end'].minute)
+    data['date'] = datetime.datetime.fromisoformat(data['date'].replace('Z', '')).date()
+    print(data['date'])
+    model.lessons.create(data)
+    return 'OK', 200

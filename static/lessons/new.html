@@ -1,0 +1,109 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Timetable</title>
+        <link rel="stylesheet" href="/style.css">
+        <script type="text/javascript" src="/scripts.js"></script>
+    </head>
+    <body>
+<div class = 'new'>
+    <h1>Add lesson</h1>
+    <form id='form'>
+        <p>
+            Lesson name:
+            <input id='name' required>
+        </p>
+        <p>
+            Group:
+            <select id="group" form='form' required>
+            {% for group in groups -%}
+                <option value="{{group.id}}">{{ group.name }}</option>
+            {%- endfor %}
+            </select>
+        </p>
+        <p>
+            Lecturer:
+            <select id="lecturer" required>
+            {% for lecturer in lecturers -%}
+                <option value="{{lecturer.id}}">{{ lecturer.name }}</option>
+            {%- endfor %}
+            </select>
+        </p>
+
+        <p>
+            Room:
+            <select id="address" onchange="adr(this.value)" required>
+                {% for address in addresses -%}
+                    <option value="{{address.address}}">{{ address.address }}</option>
+                {%- endfor %}
+            </select>
+
+            <select id='target' required></select>
+        </p>
+
+        <p>
+            Date:
+            <input type="date" id="date" required>
+        </p>
+
+        <p>
+            Start time:
+            <input type="time" id='start' required>
+        </p>
+
+        <input type="submit">
+    </form>
+</div>
+    </body>
+    <script>
+        function adr(address) {
+            select = document.getElementById('target');
+            select.innerHTML = '';
+            const xhr = new XMLHttpRequest();
+            xhr.open('OPTIONS', '/api/rooms/address/', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() { // (3)
+                if (this.readyState != 4) return;
+                if (xhr.status == 200) {
+                    rooms = JSON.parse(xhr.response);
+                    rooms.forEach(element => {
+                        console.log(element);
+                        let option = document.createElement('option');
+                        option.setAttribute('value', element.id);
+                        option.innerText = element.name
+                        select.appendChild(option);
+                    });
+                }
+            };
+            xhr.send('address=' + encodeURIComponent(address));
+        }
+        $('#form').on('submit', function(e) {
+            
+            var frm = $('#form');
+            console.log(new Date($('#date')[0].value).toISOString());
+
+            e.preventDefault();
+            $.ajax({
+            type: "POST",
+            url: "/api/lessons/",
+            data: {
+                'group':    $('#group')[0].value,
+                'lecturer': $('#lecturer')[0].value,
+                'room':     $('#target')[0].value,
+                'date':     new Date($('#date')[0].value).toISOString(),
+                'start':    $('#start')[0].value,
+                'name':     $('#name')[0].value,
+            },
+            success: function() {
+                alert('success');
+            },
+            error: function(a,b) {
+                alert(b);
+            }
+            });
+        });
+        
+    </script>
+</html>
